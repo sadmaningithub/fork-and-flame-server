@@ -30,6 +30,13 @@ async function run() {
 
         const dishCollection = client.db('forkAndFlameDB').collection('dishCollection')
 
+        app.post('/dishes', async(req, res)=>{
+            const doc = req.body;
+            // console.log(doc);
+            const result = await dishCollection.insertOne(doc);
+            res.send(result);
+        })
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
