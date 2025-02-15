@@ -30,6 +30,11 @@ async function run() {
 
         const dishCollection = client.db('forkAndFlameDB').collection('dishCollection')
 
+        app.get('/dishes', async(req, res)=>{
+            const result = await dishCollection.find().toArray();
+            res.send(result)
+        })
+
         app.post('/dishes', async(req, res)=>{
             const doc = req.body;
             // console.log(doc);
