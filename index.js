@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,6 +32,13 @@ async function run() {
 
         app.get('/dishes', async(req, res)=>{
             const result = await dishCollection.find().toArray();
+            res.send(result)
+        })
+
+        app.get('/dishes/:id', async(req, res)=>{
+            const id = req.params.id
+            const query = {_id: new ObjectId(id)};
+            const result = await dishCollection.findOne(query);
             res.send(result)
         })
 
