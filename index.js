@@ -28,7 +28,8 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const dishCollection = client.db('forkAndFlameDB').collection('dishCollection')
+        const dishCollection = client.db('forkAndFlameDB').collection('dishCollection');
+        const cartCollection = client.db('forkAndFlameDb').collection('cartCollection');
 
         app.get('/dishes', async(req, res)=>{
             const result = await dishCollection.find().toArray();
@@ -42,11 +43,28 @@ async function run() {
             res.send(result)
         })
 
+        // get cart
+
+        app.get('/cart', async(req, res)=>{
+            const result = await cartCollection.find().toArray();
+            res.send(result);
+        })
+
+        // food/dish post
+
         app.post('/dishes', async(req, res)=>{
             const doc = req.body;
             // console.log(doc);
             const result = await dishCollection.insertOne(doc);
             res.send(result);
+        })
+
+        // cart post
+
+        app.post('/cart', async(req, res)=>{
+            const item = req.body;
+            const result = await cartCollection.insertOne(item);
+            res.send(result)
         })
 
         // Send a ping to confirm a successful connection
